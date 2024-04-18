@@ -46,6 +46,10 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -58,4 +62,6 @@ dependencies {
     implementation ("androidx.palette:palette-ktx:1.0.0")
     // Picasso for loading image
     implementation ("com.squareup.picasso:picasso:2.8")
+    // Picasso filters
+    implementation("jp.wasabeef:picasso-transformations:2.4.0")
 }

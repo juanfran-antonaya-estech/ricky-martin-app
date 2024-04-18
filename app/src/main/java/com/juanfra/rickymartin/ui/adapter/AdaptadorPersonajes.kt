@@ -1,13 +1,15 @@
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.juanfra.rickymartin.R
 import com.juanfra.rickymartin.data.models.characterlist.Personaje
 import com.juanfra.rickymartin.databinding.HolderPersonajesBinding
-import com.juanfra.rickymartin.ui.ColorHelper
+import com.juanfra.rickymartin.ui.PicassoThings.ColorHelper
 import com.juanfra.rickymartin.ui.MyViewModel
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.GrayscaleTransformation
 
 class AdaptadorPersonajes(var listado: ArrayList<Personaje>) :
     RecyclerView.Adapter<AdaptadorPersonajes.MiCelda>() {
@@ -37,9 +39,20 @@ class AdaptadorPersonajes(var listado: ArrayList<Personaje>) :
         helper.init()
 
         with(holder.binding){
-            Picasso.get()
-                .load(personaje.image)
-                .into(ivPersonajeLista)
+            val picasso = Picasso.get()
+            if (personaje.status.equals("Dead")){
+                picasso
+                    .load(personaje.image)
+                    .transform(GrayscaleTransformation())
+                    .into(ivPersonajeLista)
+                tvDead.visibility = TextView.VISIBLE
+            } else {
+                Picasso.get()
+                    .load(personaje.image)
+                    .into(ivPersonajeLista)
+                tvDead.visibility = TextView.GONE
+            }
+
 
             tvNombrePersonajeLista.text = personaje.name
 

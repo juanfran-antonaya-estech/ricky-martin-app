@@ -1,4 +1,4 @@
-package com.juanfra.rickymartin.ui
+package com.juanfra.rickymartin.ui.PicassoThings
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -81,6 +81,7 @@ class ColorHelper(val imageUrl: String, val context: Context) {
 
         Picasso.get()
             .load(imageUrl)
+            .placeholder(R.drawable.placeholder)
             .into(target)
 
     }

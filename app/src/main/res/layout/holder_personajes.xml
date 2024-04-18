@@ -27,6 +27,19 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
+            android:id="@+id/tvDead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DECEASED"
+            android:textColor="#FF0000"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPersonajeLista"
+            app:layout_constraintEnd_toEndOf="@+id/ivPersonajeLista"
+            app:layout_constraintStart_toStartOf="@+id/ivPersonajeLista"
+            app:layout_constraintTop_toTopOf="@+id/ivPersonajeLista" />
+
+        <TextView
             android:id="@+id/tvNombrePersonajeLista"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

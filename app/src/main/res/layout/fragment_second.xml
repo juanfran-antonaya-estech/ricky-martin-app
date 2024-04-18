@@ -7,29 +7,170 @@
     tools:context=".ui.fragments.SecondFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCharacter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
-        <Button
-            android:id="@+id/button_second"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/ivCharacterFace"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/previous"
-            app:layout_constraintBottom_toTopOf="@id/textview_second"
+            android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textview_second"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvCharacterName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/lorem_ipsum"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Nombre de persona"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/ivCharacterFace"
+            app:layout_constraintStart_toStartOf="@+id/ivCharacterFace"
+            app:layout_constraintTop_toBottomOf="@+id/ivCharacterFace" />
+
+        <TextView
+            android:id="@+id/tvGenderDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Género"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tvGender"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/tvCharacterName"
+            app:layout_constraintTop_toBottomOf="@+id/tvCharacterName" />
+
+        <TextView
+            android:id="@+id/tvGender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAlignment="textEnd"
+            app:layout_constraintEnd_toEndOf="@+id/tvCharacterName"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvGenderDesc"
+            app:layout_constraintTop_toTopOf="@+id/tvGenderDesc" />
+
+        <TextView
+            android:id="@+id/tvOrigenDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Origen"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/btOrigen"
+            app:layout_constraintEnd_toStartOf="@+id/btOrigen"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_second" />
+            app:layout_constraintTop_toTopOf="@+id/btOrigen" />
+
+        <Button
+            android:id="@+id/btOrigen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvOrigenDesc"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreationDate" />
+
+        <TextView
+            android:id="@+id/tvUbicacionDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ubicación actual"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/btUbicacion"
+            app:layout_constraintEnd_toStartOf="@+id/btUbicacion"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btUbicacion" />
+
+        <Button
+            android:id="@+id/btUbicacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvUbicacionDesc"
+            app:layout_constraintTop_toBottomOf="@+id/btOrigen" />
+
+        <TextView
+            android:id="@+id/tvStatusDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Estado"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tvStatus"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/tvGenderDesc"
+            app:layout_constraintTop_toBottomOf="@+id/tvGenderDesc" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAlignment="textEnd"
+            app:layout_constraintEnd_toEndOf="@+id/tvGender"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvStatusDesc"
+            app:layout_constraintTop_toTopOf="@+id/tvStatusDesc" />
+
+        <TextView
+            android:id="@+id/tvCreationDateDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Creado en"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tvCreationDate"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/tvStatusDesc"
+            app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
+
+        <TextView
+            android:id="@+id/tvCreationDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAlignment="textEnd"
+            app:layout_constraintEnd_toEndOf="@+id/tvStatus"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvCreationDateDesc"
+            app:layout_constraintTop_toTopOf="@+id/tvCreationDateDesc" />
+
+        <TextView
+            android:id="@+id/tvEpisodesTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tvCharacterName"
+            app:layout_constraintStart_toStartOf="@+id/tvCharacterName"
+            app:layout_constraintTop_toBottomOf="@+id/btUbicacion" />
+
+        <LinearLayout
+            android:id="@+id/llepisodesChar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/tvEpisodesTitle"
+            app:layout_constraintStart_toStartOf="@+id/tvEpisodesTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvEpisodesTitle"></LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
