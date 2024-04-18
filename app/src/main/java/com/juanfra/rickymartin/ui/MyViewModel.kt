@@ -13,9 +13,10 @@ import kotlinx.coroutines.launch
 
 class MyViewModel : ViewModel() {
 
-    private val characterResultLiveData : MutableLiveData<CharacterPageResults> = MutableLiveData()
-    private val personajeLiveData : MutableLiveData<Personaje> = MutableLiveData()
-    private val episodioLiveData : MutableLiveData<Episode> = MutableLiveData()
+    private val characterResultLiveData: MutableLiveData<CharacterPageResults> = MutableLiveData()
+    private val personajeLiveData: MutableLiveData<Personaje> = MutableLiveData()
+    private val episodioLiveData: MutableLiveData<Episode> = MutableLiveData()
+    private val characterListLiveData: MutableLiveData<ArrayList<Personaje>> = MutableLiveData()
 
     private val repo by lazy {
         Repositorio()
@@ -26,7 +27,7 @@ class MyViewModel : ViewModel() {
 
         viewModelScope.launch {
             val response = repo.getCharacterByPage(page)
-            if(response.code() == 200) {
+            if (response.code() == 200) {
                 val characterResponse = response.body()
                 characterResponse?.let {
                     characterResultLiveData.postValue(it)
@@ -36,7 +37,7 @@ class MyViewModel : ViewModel() {
 
     }
 
-    fun getCharacterResultLiveData() : MutableLiveData<CharacterPageResults>{
+    fun getCharacterResultLiveData(): MutableLiveData<CharacterPageResults> {
         return characterResultLiveData
     }
 
@@ -53,29 +54,47 @@ class MyViewModel : ViewModel() {
         }
     }
 
-    fun getCharacter() : MutableLiveData<Personaje> {
+    fun getCharacter(): MutableLiveData<Personaje> {
         return personajeLiveData
     }
 
     fun getSelectedEpisode(episode: String): MutableLiveData<Episode> {
-            val episodioLiveData = MutableLiveData<Episode>()
+        val episodioLiveData = MutableLiveData<Episode>()
         viewModelScope.launch {
             val response = repo.getEpisodeByURL(episode)
-            if (response.code() == 200){
+            if (response.code() == 200) {
                 response.body()?.let {
                     episodioLiveData.postValue(it)
                 }
             }
         }
-            return episodioLiveData
+        return episodioLiveData
     }
 
     fun setEpisode(episodio: Episode?) {
         episodio?.let { episodioLiveData.postValue(it) }
     }
 
-    fun getEpisode() : MutableLiveData<Episode> {
+    fun getEpisode(): MutableLiveData<Episode> {
         return episodioLiveData
+    }
+
+    fun setCharacterList(characters: List<String>){
+        val arrayMunecos = ArrayList<Personaje>()
+        viewModelScope.launch {
+            for (url in characters) {
+                val id = url.lastIndexOf("/") + 1
+                val response = repo.getCharacterById(id)
+                if (response.code() == 200) {
+                    response.body()?.let { arrayMunecos.add(it) }
+                    characterListLiveData.postValue(arrayMunecos)
+                }
+            }
+        }
+    }
+
+    fun getCharacterList() : MutableLiveData<ArrayList<Personaje>> {
+        return characterListLiveData
     }
 
 }
