@@ -1,6 +1,5 @@
 package com.juanfra.rickymartin.ui.fragments
 
-import AdaptadorPersonajes
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,11 +8,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.juanfra.rickymartin.R
 import com.juanfra.rickymartin.data.models.characterlist.Personaje
 import com.juanfra.rickymartin.data.models.characterlist.CharacterPageResults
 import com.juanfra.rickymartin.databinding.FragmentFirstBinding
 import com.juanfra.rickymartin.ui.MyViewModel
+import com.juanfra.rickymartin.ui.adapter.AdaptadorPersonajes
+import com.juanfra.rickymartin.ui.listeners.CeldaClickListener
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -21,6 +25,7 @@ import com.juanfra.rickymartin.ui.MyViewModel
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
+    private lateinit var adaptador : AdaptadorPersonajes
     private val binding get() = _binding!!
     private var currentPage = 1
 
@@ -42,6 +47,17 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getCharacterByPage(currentPage)
         AdaptadorPersonajes.viewModel = viewModel
+
+        adaptador = AdaptadorPersonajes(ArrayList<Personaje>(), object : CeldaClickListener{
+            override fun clickEnCelda(character: Personaje, position: Int) {
+                viewModel.setCharacter(character.id)
+                findNavController().navigate(R.id.initialFragment_to_Second_Fragment)
+            }
+        })
+        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        binding.recyclerView.adapter = adaptador
+        binding.recyclerView.layoutManager = layoutManager
 
         viewModel.getCharacterResultLiveData().observe(viewLifecycleOwner, observer)
     }
@@ -77,19 +93,21 @@ class FirstFragment : Fragment() {
             viewModel.getCharacterByPage(currentPage)
         }
 
-        llenarAdaptador(rasultaos.results)
+        actualizarAdapter(rasultaos.results)
+
+        binding.fabSearch.setOnClickListener{
+            viewModel.setActualName(binding.tiName.text.toString())
+            viewModel.getCharacterByPage(1)
+        }
     }
 
-    private fun llenarAdaptador(personajeList: List<Personaje>) {
-        val adaptadorPersonajes = AdaptadorPersonajes(ArrayList(personajeList))
-        val layoutManager = GridLayoutManager(requireContext(), 2)
-
-        binding.recyclerView.adapter = adaptadorPersonajes
-        binding.recyclerView.layoutManager = layoutManager
+    private fun actualizarAdapter(personajeList: List<Personaje>) {
+        adaptador.refrescarListado(personajeList)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }

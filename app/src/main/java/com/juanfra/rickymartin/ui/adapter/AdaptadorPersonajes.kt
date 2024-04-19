@@ -1,3 +1,5 @@
+package com.juanfra.rickymartin.ui.adapter
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -6,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.juanfra.rickymartin.R
 import com.juanfra.rickymartin.data.models.characterlist.Personaje
 import com.juanfra.rickymartin.databinding.HolderPersonajesBinding
-import com.juanfra.rickymartin.ui.PicassoThings.ColorHelper
 import com.juanfra.rickymartin.ui.MyViewModel
+import com.juanfra.rickymartin.ui.PicassoThings.ColorHelper
+import com.juanfra.rickymartin.ui.listeners.CeldaClickListener
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.GrayscaleTransformation
+import jp.wasabeef.picasso.transformations.gpu.SepiaFilterTransformation
+import jp.wasabeef.picasso.transformations.gpu.VignetteFilterTransformation
 
-class AdaptadorPersonajes(var listado: ArrayList<Personaje>) :
+class AdaptadorPersonajes(val personajes: ArrayList<Personaje>,val listener: CeldaClickListener) :
     RecyclerView.Adapter<AdaptadorPersonajes.MiCelda>() {
     //Your holder here
     inner class MiCelda(var binding: HolderPersonajesBinding) :
@@ -21,19 +26,21 @@ class AdaptadorPersonajes(var listado: ArrayList<Personaje>) :
         lateinit var viewModel: MyViewModel
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiCelda {
+    private lateinit var padre : ViewGroup
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MiCelda {
+        padre = parent
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = HolderPersonajesBinding.inflate(layoutInflater, parent, false)
         return MiCelda(binding)
     }
 
     override fun getItemCount(): Int {
-        return listado.size
+        return personajes.size
     }
 
     override fun onBindViewHolder(holder: MiCelda, position: Int) {
-        val personaje = listado[position]
+        val personaje = personajes[position]
 
         val helper = ColorHelper(personaje.image, holder.itemView.context)
         helper.init()
@@ -46,11 +53,21 @@ class AdaptadorPersonajes(var listado: ArrayList<Personaje>) :
                     .transform(GrayscaleTransformation())
                     .into(ivPersonajeLista)
                 tvDead.visibility = TextView.VISIBLE
-            } else {
+                tvMissing.visibility = TextView.GONE
+            } else if (personaje.status.equals("Alive")) {
                 Picasso.get()
                     .load(personaje.image)
                     .into(ivPersonajeLista)
                 tvDead.visibility = TextView.GONE
+                tvMissing.visibility = TextView.GONE
+            } else {
+                Picasso.get()
+                    .load(personaje.image)
+                    .transform(SepiaFilterTransformation(holder.itemView.context))
+                    .transform(VignetteFilterTransformation(holder.itemView.context))
+                    .into(ivPersonajeLista)
+                tvDead.visibility = TextView.GONE
+                tvMissing.visibility = TextView.VISIBLE
             }
 
 
@@ -62,9 +79,18 @@ class AdaptadorPersonajes(var listado: ArrayList<Personaje>) :
         }
 
         holder.itemView.setOnClickListener{
-            viewModel.setCharacter(personaje.id)
-            Navigation.findNavController(holder.itemView).navigate(R.id.initialFragment_to_Second_Fragment)
+            listener.clickEnCelda(personaje, position)
+
+
         }
+    }
+
+    fun refrescarListado(lista: List<Personaje>) {
+        personajes.clear()
+        if (lista != null){
+            personajes.addAll(lista)
+        }
+        notifyItemRangeChanged(0, itemCount - 1)
     }
 
 

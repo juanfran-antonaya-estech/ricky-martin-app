@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
 import com.juanfra.rickymartin.R
 import com.squareup.picasso.Picasso
+import okhttp3.internal.notify
+import okhttp3.internal.wait
 import java.lang.Exception
 
 class ColorHelper(val imageUrl: String, val context: Context) {
@@ -81,7 +83,7 @@ class ColorHelper(val imageUrl: String, val context: Context) {
 
         Picasso.get()
             .load(imageUrl)
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.ic_launcher_background)
             .into(target)
 
     }

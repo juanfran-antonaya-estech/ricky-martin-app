@@ -64,4 +64,6 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.8")
     // Picasso filters
     implementation("jp.wasabeef:picasso-transformations:2.4.0")
+
+    implementation("jp.co.cyberagent.android:gpuimage:2.1.0")
 }

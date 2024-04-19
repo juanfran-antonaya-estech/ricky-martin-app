@@ -19,6 +19,7 @@ import com.juanfra.rickymartin.databinding.FragmentSecondBinding
 import com.juanfra.rickymartin.ui.PicassoThings.ColorHelper
 import com.juanfra.rickymartin.ui.MyViewModel
 import com.squareup.picasso.Picasso
+import org.json.JSONObject
 import java.time.Instant
 import java.util.Date
 
@@ -36,8 +37,7 @@ class SecondFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
@@ -47,7 +47,6 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.getCharacter().observe(viewLifecycleOwner) {
             it?.let { fillPagina(it) }
             Log.d("El moñeco", it.toString())
@@ -69,9 +68,7 @@ class SecondFragment : Fragment() {
         val helper = ColorHelper(character.image, requireContext())
         helper.init()
 
-        Picasso.get()
-            .load(character.image)
-            .into(binding.ivCharacterFace)
+        Picasso.get().load(character.image).into(binding.ivCharacterFace)
 
         binding.tvCharacterName.setTextColor(helper.DarkMutedText)
         binding.tvCharacterName.setBackgroundColor(helper.DarkMutedBG)
@@ -99,6 +96,19 @@ class SecondFragment : Fragment() {
 
         fillEpisodes(binding.llepisodesChar, character.episode, helper)
 
+        //botones
+        binding.btOrigen.setOnClickListener(){
+            if (character.origin.url.isNotEmpty()){
+                viewModel.setLocation(character.origin.url)
+                findNavController().navigate(R.id.action_SecondFragment_to_fragmentLocation)
+            }
+        }
+        binding.btUbicacion.setOnClickListener(){
+            if (character.location.url.isNotEmpty()){
+                viewModel.setLocation(character.location.url)
+                findNavController().navigate(R.id.action_SecondFragment_to_fragmentLocation)
+            }
+        }
 
     }
 
@@ -110,16 +120,18 @@ class SecondFragment : Fragment() {
         for (episode in episodes) {
             val tv = TextView(requireContext())
             tv.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1F
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1F
             )
+
             viewModel.getSelectedEpisode(episode).observe(viewLifecycleOwner) { episodio ->
-                tv.text = episodio.episode.replace("S", "Temporada ").replace("E"," Episodio ") + ":\n" + episodio.name
-                tv.setPadding(0,10,0,10)
-                tv.setOnClickListener{
+                tv.text = episodio.episode.replace("S", "Temporada ")
+                    .replace("E", " Episodio ") + ":\n" + episodio.name
+                tv.setPadding(0, 10, 0, 10)
+                tv.setOnClickListener {
                     viewModel.setEpisode(episodio)
+
                     findNavController().navigate(R.id.action_SecondFragment_to_fragmentEpisode)
+
                 }
 
             }
